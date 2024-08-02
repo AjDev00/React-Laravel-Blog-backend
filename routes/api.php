@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\TempImageContoller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //inserting blogs api(localhost:800/api/blogs).
 Route::post('blogs', [BlogController::class, 'store']);
+
+//inserting images api
+Route::post('save-temp-image', [TempImageContoller::class,'store']);
