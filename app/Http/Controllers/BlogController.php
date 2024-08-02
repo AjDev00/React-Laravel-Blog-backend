@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\TempImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
@@ -39,6 +41,24 @@ class BlogController extends Controller
         $blog->shortDesc = $request->shortDesc;
         $blog->author = $request->author;
         $blog->save();
+
+        //save image.
+        $tempImage = TempImage::find($request->image_id);
+
+        if($tempImage != null){
+            $imageExtArray = explode('.', $tempImage->name); //seperates the image name and it's extension.
+            $ext = last($imageExtArray); //save the extension in a variable.
+            $imageName = time().'-'.$blog->id.'.'.$ext; //create a unique name for the image with the time function followed by the blog id and the previously saved extension.
+
+            $blog->image = $imageName;
+            $blog->save();
+
+            //move image from a temporary directory to a permanent directory with the new image name.
+            $sourcePath = public_path('uploads/temp/'.$tempImage->name);
+            $destinationPath = public_path('uploads/blogs/'.$imageName);
+
+            File::copy($sourcePath, $destinationPath); //copies the image from the source path to the destination path.
+        }
         
         return response()->json([
            'status' => true,
