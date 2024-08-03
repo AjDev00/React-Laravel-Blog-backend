@@ -21,6 +21,8 @@ class BlogController extends Controller
         ]);
     }
 
+
+    //This will display the blog with id, 24.
     public function showFirst(){
         $firstBlog = Blog::find(24);
 
