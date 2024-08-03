@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,7 +25,9 @@ class BlogController extends Controller
 
     //This will display the blog with id, 24.
     public function showFirst(){
-        $firstBlog = Blog::find(24);
+        $firstBlog = Cache::remember('first_blog', 30, function(){
+            return Blog::find(24);
+        });
 
         return response()->json([
             'status' => true,
