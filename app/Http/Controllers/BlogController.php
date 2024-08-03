@@ -13,7 +13,21 @@ class BlogController extends Controller
 
     //This will show all blogs.
     public function index(){
+        $blogs = Blog::orderBy("created_at")->get();
 
+        return response()->json([
+            'status' => true,
+            'data'=> $blogs
+        ]);
+    }
+
+    public function showFirst(){
+        $firstBlog = Blog::find(18)->first();
+
+        return response()->json([
+            'status' => true,
+            'data'=> $firstBlog
+        ]);
     }
 
     //This will insert all blogs.

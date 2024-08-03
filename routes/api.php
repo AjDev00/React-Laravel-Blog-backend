@@ -25,3 +25,9 @@ Route::post('blogs', [BlogController::class, 'store']);
 
 //inserting images api
 Route::post('save-temp-image', [TempImageContoller::class,'store']);
+
+//getting all blogs.
+Route::get('blogs', [BlogController::class, 'index']);
+
+//get first blog.
+Route::get('first-blog', [BlogController::class, 'showFirst']);
