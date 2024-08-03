@@ -31,3 +31,6 @@ Route::get('blogs', [BlogController::class, 'index']);
 
 //get first blog.
 Route::get('first-blog', [BlogController::class, 'showFirst']);
+
+//get a specific blog.
+Route::get('blogs/{id}', [BlogController::class, 'show']);

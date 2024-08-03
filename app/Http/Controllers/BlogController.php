@@ -22,7 +22,7 @@ class BlogController extends Controller
     }
 
     public function showFirst(){
-        $firstBlog = Blog::find(18)->first();
+        $firstBlog = Blog::find(24);
 
         return response()->json([
             'status' => true,
@@ -82,8 +82,23 @@ class BlogController extends Controller
     }
 
     //This will show a single blog.
-    public function show(){
+    public function show($id){
+        $blog = Blog::find($id);
 
+        if($blog === null){
+            return response()->json([
+                'status' => false,
+                'message' => 'Blog Not Found!'
+            ]);
+        }
+
+        //better date format.
+        $blog['date'] = \Carbon\Carbon::parse($blog->created_at)->format('d M, Y');
+
+        return response()->json([
+            'status' => true,
+            'data' => $blog
+        ]);
     }
 
     //This will edit a single blog.
