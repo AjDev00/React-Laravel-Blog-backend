@@ -34,3 +34,6 @@ Route::get('first-blog', [BlogController::class, 'showFirst']);
 
 //get a specific blog.
 Route::get('blogs/{id}', [BlogController::class, 'show']);
+
+//update a specific blog.
+Route::put('blogs/{id}', [BlogController::class, 'update']);
