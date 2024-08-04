@@ -35,6 +35,7 @@ class BlogController extends Controller
         ]);
     }
 
+
     //This will insert all blogs.
     public function store(Request $request){
         //making required fields required.
@@ -86,6 +87,7 @@ class BlogController extends Controller
         ]);
     }
 
+
     //This will show a single blog.
     public function show($id){
         $blog = Blog::find($id);
@@ -97,7 +99,7 @@ class BlogController extends Controller
             ]);
         }
 
-        //better date format.
+        //modern date format.
         $blog['date'] = \Carbon\Carbon::parse($blog->created_at)->format('d M, Y');
 
         return response()->json([
@@ -105,6 +107,7 @@ class BlogController extends Controller
             'data' => $blog
         ]);
     }
+
 
     //This will edit a single blog.
     public function update($id, Request $request){
@@ -146,6 +149,10 @@ class BlogController extends Controller
         $tempImage = TempImage::find($request->image_id);
 
         if($tempImage != null){
+
+            //delete previous images after a new one has been updated.
+            File::delete(public_path('uploads/blogs/'. $blog->id));
+
             $imageExtArray = explode('.', $tempImage->name); //seperates the image name and it's extension.
             $ext = last($imageExtArray); //save the extension in a variable.
             $imageName = time().'-'.$blog->id.'.'.$ext; //create a unique name for the image with the time function followed by the blog id and the previously saved extension.
