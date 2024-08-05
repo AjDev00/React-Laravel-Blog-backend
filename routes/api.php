@@ -37,3 +37,6 @@ Route::get('blogs/{id}', [BlogController::class, 'show']);
 
 //update a specific blog.
 Route::put('blogs/{id}', [BlogController::class, 'update']);
+
+//delete a specific blog.
+Route::delete('blogs/{id}', [BlogController::class,'destroy']);

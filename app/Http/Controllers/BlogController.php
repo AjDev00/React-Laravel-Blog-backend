@@ -26,7 +26,7 @@ class BlogController extends Controller
     //This will display the blog with id, 24.
     public function showFirst(){
         $firstBlog = Cache::remember('first_blog', 30, function(){
-            return Blog::find(24);
+            return Blog::find(24)->first();
         });
 
         return response()->json([
@@ -177,7 +177,24 @@ class BlogController extends Controller
     }
 
     //This will delete a blog.
-    public function destroy(){
+    public function destroy($id){
+        $blog = Blog::find($id);
+        
+        if($blog === null){
+            return response()->json([
+                'status' => false,
+                'message' => 'Blog Not Found!'
+            ]);
+        }
 
+        //delete blog image.
+        File::delete(public_path('uploads/blogs/'. $blog->image));
+        
+        $blog->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => "Blog deleted successfully"
+        ]);
     }
 }
