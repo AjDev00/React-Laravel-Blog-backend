@@ -13,8 +13,14 @@ class BlogController extends Controller
 {
 
     //This will show all blogs.
-    public function index(){
-        $blogs = Blog::orderBy("created_at")->get();
+    public function index(Request $request){
+        $blogs = Blog::orderBy("created_at", "desc");
+
+        if(!empty($request->keyword)){
+            $blogs = $blogs->where("title","like","%".$request->keyword."%");
+        }
+
+        $blogs = $blogs->get();
 
         return response()->json([
             'status' => true,
@@ -189,7 +195,7 @@ class BlogController extends Controller
 
         //delete blog image.
         File::delete(public_path('uploads/blogs/'. $blog->image));
-        
+
         $blog->delete();
 
         return response()->json([
